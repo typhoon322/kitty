@@ -18,8 +18,9 @@
 				<p>随便拉 无所谓啦</p>
 				<p>就酱啦</p>
         <p>{{index.greeting}}</p>
-        <div v-for="image in index.images" :key="image.id">
-          <img class="pics"  :src="image.url"/>
+        <div v-for="image in index.images" :key="image._id">
+          <img class="pics"  :src="`${image.url}?imageView2/0/w/1280/h/1280/q/94
+`"/>
           <p>{{image.title}}</p>
         </div>
 			</div>
@@ -49,7 +50,9 @@ const requestHeaders = {
 export default {
   data() {
     return {
-      index : {},
+      index : {
+        images: [],
+      },
     };
   },
   created() {
@@ -67,11 +70,11 @@ export default {
       //     this.index = res;
       //   }
       // });
-      return Vue.http.get('http://192.168.1.3:3333/index')
+      return Vue.http.get('http://111.230.249.146:3077/index')
       .then((data) => {
         console.log(data);
         if (data.status === 200) {
-          this.index =  data.body;
+          this.index =  data.body.data;
         }
       });
     },
@@ -90,7 +93,6 @@ export default {
         new Promise((resolve, reject) => {
           fetch(path, {
             method: 'GET',
-            credentials: 'include',
           }).then(response => response.json(),
           ).then((json) => {
             resolve(json);
